@@ -16,6 +16,7 @@ import { ActivityIndicator } from "react-native-paper"
 import { useDispatch } from "react-redux"
 import { uploadBytes, getStorage, ref, getDownloadURL } from "firebase/storage"
 import { createPost } from "../../redux/actions"
+import { auth } from "../../firebase/firestore"
 
 const HideKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -30,29 +31,66 @@ export function SavePostScreen(props) {
   const dispatch = useDispatch()
 
   const saveVideoToFirebase = async () => {
+    const user = auth.currentUser.uid
     setRequestRunning(true)
-    const response = await fetch(
+
+    const storage = getStorage()
+
+    const videoResponse = await fetch(
       props.route.params.source.replace("file://", "")
     )
-
-    const blob = await response.blob()
-    const storage = getStorage()
-    const filename = props.route.params.source.substring(
+    const videoBlob = await videoResponse.blob()
+    const videoFilename = props.route.params.source.substring(
       props.route.params.source.lastIndexOf("/") + 1
     )
-    const storageRef = ref(storage, `posts/${filename}`)
+    const thumbnailResponse = await fetch(
+      props.route.params.sourceThumb.replace("file://", "")
+    )
+
+    const thumbnailBlob = await thumbnailResponse.blob()
+
+    const thumbnailFilename = props.route.params.sourceThumb.substring(
+      props.route.params.source.lastIndexOf("/") + 1
+    )
+    const videoMetadata = { contentType: "video/mov" }
+    const thumbnailMetadata = { contentType: "image/jpg" }
+
+    const videoStorageRef = ref(
+      storage,
+      `posts/${user}/video/${videoFilename}`,
+      videoMetadata
+    )
+    const thumbnailStorageRef = ref(
+      storage,
+      `posts/${user}/thumbnail/${thumbnailFilename}`,
+      thumbnailMetadata
+    )
 
     try {
-      const snapshot = await uploadBytes(storageRef, blob)
-      console.log("Uploaded a blob or file!", snapshot)
+      const uploadVideoTask = await uploadBytes(
+        videoStorageRef,
+        videoBlob,
+        videoMetadata
+      )
+      const uploadThumbnailTask = await uploadBytes(
+        thumbnailStorageRef,
+        thumbnailBlob,
+        videoMetadata
+      )
+      console.log("Uploaded video!", uploadVideoTask)
+      console.log("Uploaded thumbnail!", uploadThumbnailTask)
     } catch (err) {
       console.log("ERROR", err)
     }
     setRequestRunning(false)
-    const downloadUrl = await getDownloadURL(storageRef)
-    dispatch(createPost(postDescription, downloadUrl))
+    const downloadVideoUrl = await getDownloadURL(videoStorageRef)
+    const downloadThumbnailUrl = await getDownloadURL(thumbnailStorageRef)
+    dispatch(
+      createPost(postDescription, downloadVideoUrl, downloadThumbnailUrl)
+    )
     navigation.dispatch(StackActions.popToTop())
-    console.log("Video available at: ", downloadUrl)
+    console.log("Video available at: ", downloadVideoUrl)
+    console.log("Thumbnail available at: ", downloadThumbnailUrl)
   }
 
   if (requestRunning) {
@@ -71,6 +109,7 @@ export function SavePostScreen(props) {
             style={styles.inputText}
             maxLength={150}
             multiline
+            autoFocus
             placeholder="Describe your post"
             onChangeText={setPostDescription}
             value={postDescription}

@@ -12,7 +12,8 @@ export default function MainNavigator() {
   const currentUserObject = useSelector((state) => state.auth)
   const dispatch = useDispatch()
 
-  console.log("User is logged in: ", currentUserObject)
+  currentUserObject.currentUser &&
+    console.log("User is logged in: ", currentUserObject.currentUser.email)
   useEffect(() => {
     dispatch(userAuthStateListener())
   }, [])

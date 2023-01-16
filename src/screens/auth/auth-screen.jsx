@@ -4,7 +4,7 @@ import { AuthMenu, AuthDetails } from "../../components"
 import styles from "./styles"
 
 export function AuthScreen() {
-  const [authPage, setAuthPage] = React.useState(false)
+  const [authPage, setAuthPage] = React.useState(true)
   const [detailsPage, setDetailsPage] = React.useState(true)
   return (
     <SafeAreaView style={styles.container}>

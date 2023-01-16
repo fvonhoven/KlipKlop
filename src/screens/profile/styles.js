@@ -3,9 +3,7 @@ import { StyleSheet } from "react-native"
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "darkblue",
-    justifyContent: "center",
-    alignItems: "center",
+    paddingTop: 24,
   },
   logoutButton: {
     borderWidth: 2,

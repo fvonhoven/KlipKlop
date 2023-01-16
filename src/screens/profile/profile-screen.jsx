@@ -1,22 +1,45 @@
-import React from "react"
-import { View, Text, TouchableOpacity } from "react-native"
+import React, { useEffect } from "react"
+import { SafeAreaView, Text, TouchableOpacity } from "react-native"
 import { appLogout } from "../../redux/actions"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { ProfileNavBar } from "../../components/profile/navBar/nav-bar"
+import { ProfileHeader } from "../../components/profile/header/profile-header"
+import { ProfilePostsList } from "../../components/profile/postsList/posts-list"
+import { getPostsByUser } from "../../redux/actions"
 import styles from "./styles"
 
 export function ProfileScreen() {
+  const [refreshing, setRefreshing] = React.useState(false)
+  const currentUser = useSelector((state) => state.auth.currentUser)
+  const currentUserPosts = useSelector((state) => state.posts.currentUserPosts)
   const dispatch = useDispatch()
-
   const handleLogout = () => {
     dispatch(appLogout())
   }
 
+  const fetchPosts = () => {
+    dispatch(getPostsByUser())
+  }
+
+  useEffect(() => {
+    fetchPosts()
+  }, [])
+
   return (
-    <View style={styles.container}>
-      <Text>profile-screen</Text>
+    <SafeAreaView style={styles.container}>
+      <ProfilePostsList
+        posts={currentUserPosts}
+        onRefresh={fetchPosts}
+        refreshing={refreshing}
+      >
+        <>
+          <ProfileNavBar user={currentUser} />
+          <ProfileHeader user={currentUser} />
+        </>
+      </ProfilePostsList>
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   )
 }

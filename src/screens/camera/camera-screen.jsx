@@ -4,6 +4,7 @@ import { Camera } from "expo-camera"
 import { Audio } from "expo-av"
 import * as ImagePicker from "expo-image-picker"
 import * as MediaLibrary from "expo-media-library"
+import * as VideoThumbnails from "expo-video-thumbnails"
 import { useIsFocused } from "@react-navigation/core"
 import { Feather } from "@expo/vector-icons"
 import styles from "./styles"
@@ -41,7 +42,6 @@ export function CameraScreen({ navigation }) {
         setGalleryItems(userGalleryMedia.assets)
       }
     })()
-    console.log("camera-screen")
   }, [])
 
   const recordVideo = async () => {
@@ -55,7 +55,8 @@ export function CameraScreen({ navigation }) {
         if (videoRecordPromise) {
           const data = await videoRecordPromise
           const source = data.uri
-          navigation.navigate("savePost", { source })
+          let sourceThumb = await generateThumbnail(source)
+          navigation.navigate("savePost", { source, sourceThumb })
         }
       } catch (error) {
         console.warn("Error recording video", error)
@@ -76,15 +77,29 @@ export function CameraScreen({ navigation }) {
       quality: 1,
     })
     if (!result.canceled) {
+      let sourceThumb = await generateThumbnail(result.assets[0].uri)
       navigation.navigate("savePost", {
         source: result.assets[0].uri,
+        sourceThumb,
       })
+    }
+  }
+
+  const generateThumbnail = async (videoUri) => {
+    try {
+      const { uri } = await VideoThumbnails.getThumbnailAsync(videoUri, {
+        time: 1000,
+      })
+      return uri
+    } catch (e) {
+      console.warn(e)
     }
   }
 
   if (!hasCameraPermissions || !hasAudioPermissions || !hasGalleryPermissions) {
     return <View />
   }
+
   return (
     <View style={styles.container}>
       {isFocused ? (

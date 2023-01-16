@@ -32,7 +32,6 @@ export const getCurrentUserData = (userId) => (dispatch) => {
 
 export const login = (email, password) => (dispatch) =>
   new Promise((resolve, reject) => {
-    console.log(email, password)
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
         resolve()
@@ -44,7 +43,6 @@ export const login = (email, password) => (dispatch) =>
   })
 
 export const register = (email, password) => (dispatch) => {
-  console.log({ email, password })
   return new Promise((resolve, reject) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(() => {
