@@ -49,16 +49,16 @@ export function CameraScreen({ navigation }) {
       try {
         const options = {
           maxDuration: 60,
-          quality: Camera.Constants.VideoQuality["480p"],
+          quality: Camera.Constants.VideoQuality["1080p"],
         }
-        const video = await cameraRef.recordAsync(options)
-        if (video) {
-          const source = video.uri
+        const videoRecordPromise = cameraRef.recordAsync(options)
+        if (videoRecordPromise) {
+          const data = await videoRecordPromise
+          const source = data.uri
           navigation.navigate("savePost", { source })
         }
-        console.log(video)
       } catch (error) {
-        console.log("Error recording video", error)
+        console.warn("Error recording video", error)
       }
     }
   }
@@ -89,12 +89,15 @@ export function CameraScreen({ navigation }) {
     <View style={styles.container}>
       {isFocused ? (
         <Camera
-          ref={(ref) => setCameraRef()}
+          ref={(ref) => setCameraRef(ref)}
           ratio={"16:9"}
           style={styles.camera}
           type={cameraType}
           flashMode={cameraFlash}
-          onCameraReady={() => setIsCameraReady(true)}
+          onCameraReady={() => {
+            console.log("Camera is ready")
+            setIsCameraReady(true)
+          }}
         />
       ) : null}
 
@@ -134,8 +137,12 @@ export function CameraScreen({ navigation }) {
           <TouchableOpacity
             style={styles.recordButton}
             disabled={!isCameraReady}
-            onPressOut={stopVideo}
-            onLongPress={recordVideo}
+            onPress={() => console.log("pressed")}
+            onLongPress={() => {
+              console.log("long pressed")
+              recordVideo()
+            }}
+            onPressOut={() => stopVideo()}
           />
         </View>
         <View style={{ flex: 1 }}>
