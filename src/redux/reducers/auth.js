@@ -3,6 +3,7 @@ import { USER_STATE_CHANGE } from "../constants"
 const initialState = {
   currentUser: null,
   loaded: false,
+  posts: [],
 }
 
 export const auth = (state = initialState, action) => {

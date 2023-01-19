@@ -6,8 +6,8 @@ import { login, register } from "../../redux/actions"
 import styles from "./styles"
 
 export function AuthDetails({ authPage, setDetailsPage }) {
-  const [email, setEmail] = React.useState("test@gmail.com")
-  const [password, setPassword] = React.useState("password")
+  const [email, setEmail] = React.useState("")
+  const [password, setPassword] = React.useState("")
 
   const dispatch = useDispatch()
   const handleLogin = () => {

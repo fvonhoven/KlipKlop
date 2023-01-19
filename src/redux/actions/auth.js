@@ -1,16 +1,13 @@
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-} from "firebase/auth"
-
+import firebase from "firebase"
+require("firebase/firebase-auth")
 import { USER_STATE_CHANGE } from "../constants"
-import { auth } from "../../firebase/firestore"
+import { getPostsByUser } from "./post"
 
 export const userAuthStateListener = () => (dispatch) => {
-  auth.onAuthStateChanged((user) => {
+  firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       dispatch(getCurrentUserData(user.uid))
+      dispatch(getPostsByUser(user.uid))
     } else {
       dispatch({ type: USER_STATE_CHANGE, currentUser: null, loaded: true })
     }
@@ -18,21 +15,29 @@ export const userAuthStateListener = () => (dispatch) => {
 }
 
 export const getCurrentUserData = (userId) => (dispatch) => {
-  const user = auth.currentUser
-  if (user) {
-    return dispatch({
-      type: USER_STATE_CHANGE,
-      currentUser: user,
-      loaded: true,
+  console.log("GET CURRENT USER DATA", userId)
+  firebase
+    .firestore()
+    .collection("users")
+    .doc(userId)
+    .onSnapshot((snapshot) => {
+      if (snapshot.exists) {
+        dispatch({
+          type: USER_STATE_CHANGE,
+          currentUser: snapshot.data(),
+          loaded: true,
+        })
+      } else {
+        console.log("does not exist")
+      }
     })
-  } else {
-    console.log("does not exist")
-  }
 }
 
 export const login = (email, password) => (dispatch) =>
   new Promise((resolve, reject) => {
-    signInWithEmailAndPassword(auth, email, password)
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
       .then(() => {
         resolve()
       })
@@ -44,7 +49,9 @@ export const login = (email, password) => (dispatch) =>
 
 export const register = (email, password) => (dispatch) => {
   return new Promise((resolve, reject) => {
-    createUserWithEmailAndPassword(auth, email, password)
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
       .then(() => {
         resolve()
       })
@@ -57,7 +64,9 @@ export const register = (email, password) => (dispatch) => {
 
 export const appLogout = () => (dispatch) =>
   new Promise((resolve, reject) => {
-    signOut(auth)
+    firebase
+      .auth()
+      .signOut()
       .then(() => {
         resolve()
       })

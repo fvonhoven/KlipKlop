@@ -9,9 +9,10 @@ import styles from "./styles"
 export function EditProfileFieldScreen({ route, navigation }) {
   const { title } = route.params
   const currentUser = useSelector((state) => state.auth.currentUser)
-  const [inputs, setInputs] = React.useState({ ...currentUser })
-  const onSave = async () => {
-    saveUserField(inputs).then(() => {
+  const [displayName, setDisplayName] = React.useState(currentUser.displayName)
+  const [phoneNumber, setPhoneNumber] = React.useState(currentUser.phoneNumber)
+  const onSave = () => {
+    saveUserField({ displayName, phoneNumber }).then(() => {
       navigation.goBack()
     })
   }
@@ -26,14 +27,14 @@ export function EditProfileFieldScreen({ route, navigation }) {
         <Text style={styles.title}>{title}</Text>
         <TextInput
           style={styles.textInput}
-          value={inputs.displayName}
-          onChangeText={(text) => setInputs({ ...inputs, displayName: text })}
+          value={displayName}
+          onChangeText={setDisplayName}
         />
-        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.title}>Phone Number</Text>
         <TextInput
           style={styles.textInput}
-          value={inputs.phoneNumber}
-          onChangeText={(text) => setInputs({ ...inputs, phoneNumber: text })}
+          value={phoneNumber}
+          onChangeText={setPhoneNumber}
         />
       </View>
     </SafeAreaView>

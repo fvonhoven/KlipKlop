@@ -5,6 +5,8 @@ import { AuthScreen, SavePostScreen } from "../screens"
 import HomeNavigator from "./home-navigator"
 import { useSelector, useDispatch } from "react-redux"
 import { userAuthStateListener } from "../redux/actions"
+import { EditProfileScreen } from "../components/profile/edit/edit-profile-screen"
+import { EditProfileFieldScreen } from "../components/profile/edit/field/edit-field"
 
 const Stack = createNativeStackNavigator()
 
@@ -34,6 +36,16 @@ export default function MainNavigator() {
           <Stack.Screen
             name="savePost"
             component={SavePostScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="editProfile"
+            component={EditProfileScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="editProfileField"
+            component={EditProfileFieldScreen}
             options={{ headerShown: false }}
           />
         </>

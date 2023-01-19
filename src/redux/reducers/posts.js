@@ -10,6 +10,7 @@ export const posts = (state = initialState, action) => {
       return {
         ...state,
         currentUserPosts: action.currentUserPosts,
+        loaded: action.loaded,
       }
     default:
       return state

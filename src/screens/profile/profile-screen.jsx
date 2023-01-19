@@ -8,7 +8,7 @@ import { ProfilePostsList } from "../../components/profile/postsList/posts-list"
 import { getPostsByUser } from "../../redux/actions"
 import styles from "./styles"
 
-export function ProfileScreen() {
+export function ProfileScreen({ navigation }) {
   const [refreshing, setRefreshing] = React.useState(false)
   const currentUser = useSelector((state) => state.auth.currentUser)
   const currentUserPosts = useSelector((state) => state.posts.currentUserPosts)
@@ -22,7 +22,7 @@ export function ProfileScreen() {
   }
 
   useEffect(() => {
-    fetchPosts()
+    // fetchPosts()
   }, [])
 
   return (
@@ -34,7 +34,7 @@ export function ProfileScreen() {
       >
         <>
           <ProfileNavBar user={currentUser} />
-          <ProfileHeader user={currentUser} />
+          <ProfileHeader user={currentUser} navigation={navigation} />
         </>
       </ProfilePostsList>
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>

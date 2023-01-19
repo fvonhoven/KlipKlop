@@ -21,7 +21,8 @@ export function EditProfileScreen({ navigation }) {
       saveUserProfileImage(result.assets[0].uri)
     }
   }
-  console.log("EDIT PROFILE CURRENT USER", auth.currentUser)
+  // console.log("EDIT PROFILE CURRENT USER", auth.currentUser)
+  // TODO: just use currentUser from firebase?
   return (
     <SafeAreaView style={styles.container}>
       <NavBar />
@@ -35,7 +36,7 @@ export function EditProfileScreen({ navigation }) {
             source={{ uri: auth.currentUser.photoURL }}
           />
           <View style={styles.imageOverlay} />
-          <Feather name="edit" size={24} color="white" />
+          <Feather name="camera" size={24} color="white" />
         </TouchableOpacity>
       </View>
       <View style={styles.fieldsContainer}>

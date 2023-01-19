@@ -1,52 +1,70 @@
+import firebase from "firebase"
+require("firebase/firebase-auth")
+require("firebase/firestore")
+import { saveMediaToStorage } from "./utils"
 import { CURRENT_USER_POSTS_UPDATE } from "../constants"
-import { db, auth } from "../../firebase/firestore"
-import {
-  collection,
-  doc,
-  serverTimestamp,
-  setDoc,
-  where,
-  query,
-  orderBy,
-  getDocs,
-} from "firebase/firestore"
+import uuid from "uuid-random"
 
-export const createPost =
-  (description, downloadVideoUrl, downloadThumbnailUrl) => async (dispatch) => {
-    const user = auth.currentUser.uid
-    try {
-      const storageRef = doc(db, "posts", user)
-      setDoc(storageRef, {
-        creator: user,
-        media: [downloadVideoUrl, downloadThumbnailUrl],
-        description,
-        likesCount: 0,
-        commentsCount: 0,
-        createdAt: serverTimestamp(),
-      })
-    } catch (error) {
-      console.log(error)
-    }
-  }
+export const createPost = (description, video, thumbnail) => (dispatch) =>
+  new Promise((resolve, reject) => {
+    let storagePostId = uuid()
 
-export const getPostsByUser =
-  (uid = auth.currentUser.uid) =>
-  async (dispatch) => {
-    let posts = []
-    try {
-      const q = query(
-        collection(db, "posts"),
-        where("creator", "==", uid),
-        orderBy("createdAt", "desc")
-      )
-      const querySnapshot = await getDocs(q)
-      querySnapshot.forEach((doc) => posts.push({ id: doc.id, ...doc.data() }))
-      console.log("posts", posts)
-      dispatch({
-        type: CURRENT_USER_POSTS_UPDATE,
-        currentUserPosts: posts,
+    const videoFilename = video.substring(video.lastIndexOf("/") + 1)
+    const thumbnailFilename = thumbnail.substring(
+      thumbnail.lastIndexOf("/") + 1
+    )
+    let allSavePromises = Promise.all([
+      saveMediaToStorage(
+        video,
+        `posts/${
+          firebase.auth().currentUser.uid
+        }/${storagePostId}/video/${videoFilename}`
+      ),
+      saveMediaToStorage(
+        thumbnail,
+        `posts/${
+          firebase.auth().currentUser.uid
+        }/${storagePostId}/thumbnail/${thumbnailFilename}`
+      ),
+    ])
+
+    allSavePromises
+      .then((media) => {
+        firebase
+          .firestore()
+          .collection("posts")
+          .add({
+            creator: firebase.auth().currentUser.uid,
+            media,
+            description,
+            likesCount: 0,
+            commentsCount: 0,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          })
+          .then(() => resolve())
+          .catch(() => reject())
       })
-    } catch (error) {
-      console.log(error)
-    }
-  }
+      .catch(() => reject())
+  })
+
+export const getPostsByUser = (uid) => (dispatch) =>
+  new Promise((resolve, reject) => {
+    firebase
+      .firestore()
+      .collection("posts")
+      .where("creator", "==", uid)
+      .orderBy("creation", "desc")
+      .onSnapshot((snapshot) => {
+        let posts = snapshot.docs.map((doc) => {
+          const data = doc.data()
+          const id = doc.id
+          return { id, ...data }
+        })
+        dispatch({
+          type: CURRENT_USER_POSTS_UPDATE,
+          currentUserPosts: posts,
+        })
+      })
+  }).catch((error) => {
+    console.log(error)
+  })
