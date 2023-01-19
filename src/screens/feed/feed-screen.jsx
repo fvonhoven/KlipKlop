@@ -11,10 +11,9 @@ export function FeedScreen() {
   const height = Dimensions.get("window").height
 
   useEffect(() => {
-    ;(async () => {
-      const feed = await getFeed()
+    getFeed().then((feed) => {
       setPosts(feed)
-    })()
+    })
   }, [])
 
   const onViewableItemsChanged = React.useRef(({ changed }) => {

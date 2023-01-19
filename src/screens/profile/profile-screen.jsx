@@ -22,7 +22,7 @@ export function ProfileScreen({ navigation }) {
   }
 
   useEffect(() => {
-    // fetchPosts()
+    fetchPosts()
   }, [])
 
   return (

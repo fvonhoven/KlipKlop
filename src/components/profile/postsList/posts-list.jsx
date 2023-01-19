@@ -5,8 +5,8 @@ import { ProfilePostsListItem } from "./item"
 export function ProfilePostsList({ posts, children, onRefresh, refreshing }) {
   return (
     <FlatList
-      // onRefresh={onRefresh}
-      // refreshing={refreshing}
+      onRefresh={onRefresh}
+      refreshing={refreshing}
       numColumns={3}
       removeClippedSubviews
       data={posts}

@@ -47,24 +47,28 @@ export const createPost = (description, video, thumbnail) => (dispatch) =>
       .catch(() => reject())
   })
 
-export const getPostsByUser = (uid) => (dispatch) =>
-  new Promise((resolve, reject) => {
-    firebase
-      .firestore()
-      .collection("posts")
-      .where("creator", "==", uid)
-      .orderBy("creation", "desc")
-      .onSnapshot((snapshot) => {
-        let posts = snapshot.docs.map((doc) => {
-          const data = doc.data()
-          const id = doc.id
-          return { id, ...data }
+export const getPostsByUser =
+  (uid = firebase.auth().currentUser.uid) =>
+  (dispatch) =>
+    new Promise((resolve, reject) => {
+      console.log("GET POSTS")
+      firebase
+        .firestore()
+        .collection("posts")
+        .where("creator", "==", uid)
+        .orderBy("createdAt", "desc")
+        .onSnapshot((snapshot) => {
+          let posts = snapshot.docs.map((doc) => {
+            const data = doc.data()
+            const id = doc.id
+            console.log("DOC", doc)
+            return { id, ...data }
+          })
+          dispatch({
+            type: CURRENT_USER_POSTS_UPDATE,
+            currentUserPosts: posts,
+          })
         })
-        dispatch({
-          type: CURRENT_USER_POSTS_UPDATE,
-          currentUserPosts: posts,
-        })
-      })
-  }).catch((error) => {
-    console.log(error)
-  })
+    }).catch((error) => {
+      console.log(error)
+    })
