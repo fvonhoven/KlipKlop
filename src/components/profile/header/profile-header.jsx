@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from "react-native"
 import { Avatar } from "react-native-paper"
 import styles from "./styles"
 
-export function ProfileHeader({ user }) {
+export function ProfileHeader({ user, navigation }) {
   return (
     <View style={styles.container}>
       <Avatar.Icon size={60} icon="account" />
@@ -22,7 +22,10 @@ export function ProfileHeader({ user }) {
           <Text style={styles.counterLabelText}>Likes</Text>
         </View>
       </View>
-      <TouchableOpacity style={styles.grayOutlinedButton}>
+      <TouchableOpacity
+        style={styles.grayOutlinedButton}
+        onPress={() => navigation.navigate("editProfile")}
+      >
         <Text style={styles.grayOutlinedButtonText}>Edit Profile</Text>
       </TouchableOpacity>
     </View>

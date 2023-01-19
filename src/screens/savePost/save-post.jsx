@@ -14,9 +14,10 @@ import { Feather } from "@expo/vector-icons"
 import styles from "./styles"
 import { ActivityIndicator } from "react-native-paper"
 import { useDispatch } from "react-redux"
-import { uploadBytes, getStorage, ref, getDownloadURL } from "firebase/storage"
+import { uploadBytes, getDownloadURL } from "firebase/storage"
 import { createPost } from "../../redux/actions"
-import { auth } from "../../firebase/firestore"
+import { auth, storageRef } from "../../firebase/firestore"
+import { getRandomUuid } from "../../utils/randomUuid"
 
 const HideKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -31,60 +32,52 @@ export function SavePostScreen(props) {
   const dispatch = useDispatch()
 
   const saveVideoToFirebase = async () => {
-    const user = auth.currentUser.uid
+    // const user = auth.currentUser.uid
+    // const salt = getRandomUuid()
     setRequestRunning(true)
 
-    const storage = getStorage()
+    // TODO: I think you have to create the ref to the user's folder on account creation
+    // Then you can upload to that folder
 
     const videoResponse = await fetch(
       props.route.params.source.replace("file://", "")
     )
     const videoBlob = await videoResponse.blob()
-    const videoFilename = props.route.params.source.substring(
-      props.route.params.source.lastIndexOf("/") + 1
-    )
+    // const videoFilename = props.route.params.source.substring(
+    //   props.route.params.source.lastIndexOf("/") + 1
+    // )
     const thumbnailResponse = await fetch(
       props.route.params.sourceThumb.replace("file://", "")
     )
 
     const thumbnailBlob = await thumbnailResponse.blob()
 
-    const thumbnailFilename = props.route.params.sourceThumb.substring(
-      props.route.params.source.lastIndexOf("/") + 1
-    )
-    const videoMetadata = { contentType: "video/mov" }
+    // const thumbnailFilename = props.route.params.sourceThumb.substring(
+    // props.route.params.source.lastIndexOf("/") + 1
+    // )
     const thumbnailMetadata = { contentType: "image/jpg" }
 
-    const videoStorageRef = ref(
-      storage,
-      `posts/${user}/video/${videoFilename}`,
-      videoMetadata
-    )
-    const thumbnailStorageRef = ref(
-      storage,
-      `posts/${user}/thumbnail/${thumbnailFilename}`,
-      thumbnailMetadata
-    )
+    // const videoStorageRef = await ref(
+    //   storage,
+    //   `posts/${user}/${salt}/video/${videoFilename}`
+    // )
+    // const thumbnailStorageRef = await ref(
+    //   storage,
+    //   `posts/${user}/${salt}/thumbnail/${thumbnailFilename}`,
+    //   thumbnailMetadata
+    // )
 
     try {
-      const uploadVideoTask = await uploadBytes(
-        videoStorageRef,
-        videoBlob,
-        videoMetadata
-      )
-      const uploadThumbnailTask = await uploadBytes(
-        thumbnailStorageRef,
-        thumbnailBlob,
-        videoMetadata
-      )
+      const uploadVideoTask = await uploadBytes(storageRef, videoBlob)
+      const uploadThumbnailTask = await uploadBytes(storageRef, thumbnailBlob)
       console.log("Uploaded video!", uploadVideoTask)
       console.log("Uploaded thumbnail!", uploadThumbnailTask)
     } catch (err) {
       console.log("ERROR", err)
     }
     setRequestRunning(false)
-    const downloadVideoUrl = await getDownloadURL(videoStorageRef)
-    const downloadThumbnailUrl = await getDownloadURL(thumbnailStorageRef)
+    const downloadVideoUrl = await getDownloadURL(storageRef)
+    const downloadThumbnailUrl = await getDownloadURL(storageRef)
     dispatch(
       createPost(postDescription, downloadVideoUrl, downloadThumbnailUrl)
     )

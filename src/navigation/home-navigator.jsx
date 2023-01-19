@@ -3,6 +3,8 @@ import { View } from "react-native"
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs"
 import { ProfileScreen, CameraScreen } from "../screens"
 import { Feather } from "@expo/vector-icons"
+import { FeedScreen } from "../screens/feed/feed-screen"
+import { SearchScreen } from "../screens/search/search-screen"
 
 const Tab = createMaterialBottomTabNavigator()
 
@@ -18,7 +20,7 @@ export default function HomeNavigator() {
     >
       <Tab.Screen
         name="Feed"
-        component={EmptyScreen}
+        component={FeedScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <Feather name="home" color={color} size={26} />
@@ -26,8 +28,8 @@ export default function HomeNavigator() {
         }}
       />
       <Tab.Screen
-        name="Profile"
-        component={EmptyScreen}
+        name="Search"
+        component={SearchScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <Feather name="search" color={color} size={26} />
