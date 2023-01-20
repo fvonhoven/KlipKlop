@@ -1,9 +1,12 @@
 import React, { forwardRef, useEffect, useImperativeHandle } from "react"
 import { Video } from "expo-av"
 import styles from "./styles"
+import { useUser } from "../../hooks/useUser"
+import { PostSingleOverlay } from "../general/overlay"
 
 export const PostSingle = forwardRef(({ item }, parentRef) => {
   const { id: postId, media } = item
+  const user = useUser(item.creator).data
   const videoRef = React.useRef(null)
   useImperativeHandle(parentRef, () => ({
     play,
@@ -56,16 +59,19 @@ export const PostSingle = forwardRef(({ item }, parentRef) => {
     }
   }
   return (
-    <Video
-      style={styles.container}
-      resizeMode="cover"
-      shouldPlay
-      isLooping
-      usePoster
-      key={postId}
-      posterSource={{ uri: media[1] }}
-      posterStyle={{ resizeMode: "cover", height: "100%" }}
-      source={{ uri: media[0] }}
-    />
+    <>
+      <PostSingleOverlay user={user} post={item} />
+      <Video
+        style={styles.container}
+        resizeMode="cover"
+        shouldPlay
+        isLooping
+        usePoster
+        key={postId}
+        posterSource={{ uri: media[1] }}
+        posterStyle={{ resizeMode: "cover", height: "100%" }}
+        source={{ uri: media[0] }}
+      />
+    </>
   )
 })

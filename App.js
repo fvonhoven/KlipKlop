@@ -6,19 +6,28 @@ import MainNavigator from "./src/navigation/main-navigator"
 import { NavigationContainer } from "@react-navigation/native"
 import firebase from "firebase"
 import { firebaseConfig } from "./src/firebase/firestore"
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
-export default function App() {
+function App() {
   if (firebase.apps.length === 0) {
     firebase.initializeApp(firebaseConfig)
   }
 
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { refetchInterval: false, staleTime: Infinity } },
+  })
+
   return (
-    <Provider store={store}>
-      <NavigationContainer>
-        <MainNavigator />
-      </NavigationContainer>
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <NavigationContainer>
+          <MainNavigator />
+        </NavigationContainer>
+      </Provider>
+    </QueryClientProvider>
   )
 }
+
+export default App

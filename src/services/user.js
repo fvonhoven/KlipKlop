@@ -47,3 +47,17 @@ export const queryUsersByEmail = email =>
       })
       .catch(() => reject())
   })
+
+export const getUserById = id =>
+  new Promise((resolve, reject) => {
+    console.log("GET USER BY ID", id)
+    firebase
+      .firestore()
+      .collection("users")
+      .doc(id)
+      .get()
+      .then(snapshot => {
+        resolve(snapshot.exists ? snapshot.data() : null)
+      })
+      .catch(() => reject())
+  })
