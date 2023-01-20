@@ -4,19 +4,19 @@ module.exports = {
     es6: true,
     node: true,
   },
-  extends: [
-    "eslint:recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
-    "plugin:import/typescript",
-  ],
+  extends: ["eslint:recommended", "plugin:import/errors", "plugin:import/warnings", "plugin:import/typescript"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    project: ["tsconfig.json", "tsconfig.dev.json"],
     sourceType: "module",
   },
   ignorePatterns: [
     "/lib/**/*", // Ignore built files.
+    "/node_modules/**/*", // Ignore node_modules.
+    "/dist/**/*", // Ignore dist files.
+    "/coverage/**/*", // Ignore coverage files.
+    "/.vscode/**/*", // Ignore vscode files.
+    "/.vscode-test/**/*", // Ignore vscode-test files.
+    "/App.js",
   ],
   plugins: ["@typescript-eslint", "import"],
   rules: {

@@ -7,31 +7,21 @@ export function AuthMenu({ authPage, setAuthPage, setDetailsPage }) {
   return (
     <View style={styles.container}>
       <View style={styles.containerMain}>
-        <Text style={styles.headerText}>
-          {authPage ? "Sign In" : "Sign Up"}
-        </Text>
-        <TouchableOpacity
-          style={styles.providerButton}
-          onPress={() => setDetailsPage(true)}
-        >
+        <Text style={styles.headerText}>{authPage ? "Sign In" : "Sign Up"}</Text>
+        <TouchableOpacity style={styles.providerButton} onPress={() => setDetailsPage(true)}>
           <Feather name="user" size={24} color="black" />
           <Text style={styles.providerButtonText}>Use Email</Text>
           <View />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        style={styles.containerBottomButton}
-        onPress={() => setAuthPage(!authPage)}
-      >
+      <TouchableOpacity style={styles.containerBottomButton} onPress={() => setAuthPage(!authPage)}>
         {authPage ? (
           <Text>
-            Don't have an account?{" "}
-            <Text style={styles.bottomButtonText}>Sign up</Text>
+            Don't have an account? <Text style={styles.bottomButtonText}>Sign up</Text>
           </Text>
         ) : (
           <Text>
-            Already have an account?{" "}
-            <Text style={styles.bottomButtonText}>Sign in</Text>
+            Already have an account? <Text style={styles.bottomButtonText}>Sign in</Text>
           </Text>
         )}
       </TouchableOpacity>

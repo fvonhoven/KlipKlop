@@ -30,8 +30,7 @@ export function CameraScreen({ navigation }) {
       const audioStatus = await Audio.requestPermissionsAsync()
       setHasAudioPermissions(audioStatus.status === "granted")
 
-      const galleryStatus =
-        await ImagePicker.requestMediaLibraryPermissionsAsync()
+      const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync()
       setHasGalleryPermissions(galleryStatus.status === "granted")
 
       if (galleryStatus.status === "granted") {
@@ -85,7 +84,7 @@ export function CameraScreen({ navigation }) {
     }
   }
 
-  const generateThumbnail = async (videoUri) => {
+  const generateThumbnail = async videoUri => {
     try {
       const { uri } = await VideoThumbnails.getThumbnailAsync(videoUri, {
         time: 1000,
@@ -104,7 +103,7 @@ export function CameraScreen({ navigation }) {
     <View style={styles.container}>
       {isFocused ? (
         <Camera
-          ref={(ref) => setCameraRef(ref)}
+          ref={ref => setCameraRef(ref)}
           ratio={"16:9"}
           style={styles.camera}
           type={cameraType}
@@ -121,9 +120,7 @@ export function CameraScreen({ navigation }) {
           style={styles.sideBarButton}
           onPress={() =>
             setCameraType(
-              cameraType === Camera.Constants.Type.back
-                ? Camera.Constants.Type.front
-                : Camera.Constants.Type.back
+              cameraType === Camera.Constants.Type.back ? Camera.Constants.Type.front : Camera.Constants.Type.back,
             )
           }
         >
@@ -137,7 +134,7 @@ export function CameraScreen({ navigation }) {
             setCameraFlash(
               cameraFlash === Camera.Constants.FlashMode.off
                 ? Camera.Constants.FlashMode.torch
-                : Camera.Constants.FlashMode.off
+                : Camera.Constants.FlashMode.off,
             )
           }
         >
@@ -161,15 +158,9 @@ export function CameraScreen({ navigation }) {
           />
         </View>
         <View style={{ flex: 1 }}>
-          <TouchableOpacity
-            onPress={pickFromGallery}
-            style={styles.galleryButton}
-          >
+          <TouchableOpacity onPress={pickFromGallery} style={styles.galleryButton}>
             {galleryItems[0] === undefined ? null : (
-              <Image
-                source={{ uri: galleryItems[0].uri }}
-                style={styles.galleryButtonImage}
-              />
+              <Image source={{ uri: galleryItems[0].uri }} style={styles.galleryButtonImage} />
             )}
           </TouchableOpacity>
         </View>

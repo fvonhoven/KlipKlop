@@ -11,13 +11,13 @@ export function FeedScreen() {
   const height = Dimensions.get("window").height
 
   useEffect(() => {
-    getFeed().then((feed) => {
+    getFeed().then(feed => {
       setPosts(feed)
     })
   }, [])
 
   const onViewableItemsChanged = React.useRef(({ changed }) => {
-    changed.forEach((element) => {
+    changed.forEach(element => {
       const cell = mediaRefs.current[element.key]
       if (cell) {
         // console.log("onViewableItemsChanged", element, element.isViewable)
@@ -33,12 +33,7 @@ export function FeedScreen() {
   const renderItem = ({ item, index }) => {
     return (
       <View style={[{ flex: 1, height: height - 114 }]}>
-        <PostSingle
-          item={item}
-          ref={(PostSingleRef) =>
-            (mediaRefs.current[item.posts] = PostSingleRef)
-          }
-        />
+        <PostSingle item={item} ref={PostSingleRef => (mediaRefs.current[item.posts] = PostSingleRef)} />
       </View>
     )
   }
@@ -57,7 +52,7 @@ export function FeedScreen() {
       }}
       renderItem={renderItem}
       pagingEnabled
-      keyExtractor={(item) => item.id}
+      keyExtractor={item => item.id}
       decelerationRate={"normal"}
       showsVerticalScrollIndicator={false}
       onViewableItemsChanged={onViewableItemsChanged.current}

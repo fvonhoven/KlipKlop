@@ -9,7 +9,7 @@ export function ProfileNavBar({ user }) {
       <TouchableOpacity>
         <Feather name="search" size={20} />
       </TouchableOpacity>
-      <Text style={styles.text}>user.displayName</Text>
+      <Text style={styles.text}>{user.displayName}</Text>
       <TouchableOpacity>
         <Feather name="menu" size={24} />
       </TouchableOpacity>

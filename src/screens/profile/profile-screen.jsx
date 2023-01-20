@@ -10,8 +10,8 @@ import styles from "./styles"
 
 export function ProfileScreen({ navigation }) {
   const [refreshing, setRefreshing] = React.useState(false)
-  const currentUser = useSelector((state) => state.auth.currentUser)
-  const currentUserPosts = useSelector((state) => state.posts.currentUserPosts)
+  const currentUser = useSelector(state => state.auth.currentUser)
+  const currentUserPosts = useSelector(state => state.posts.currentUserPosts)
   const dispatch = useDispatch()
   const handleLogout = () => {
     dispatch(appLogout())
@@ -27,11 +27,7 @@ export function ProfileScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ProfilePostsList
-        posts={currentUserPosts}
-        onRefresh={fetchPosts}
-        refreshing={refreshing}
-      >
+      <ProfilePostsList posts={currentUserPosts} onRefresh={fetchPosts} refreshing={refreshing}>
         <>
           <ProfileNavBar user={currentUser} />
           <ProfileHeader user={currentUser} navigation={navigation} />

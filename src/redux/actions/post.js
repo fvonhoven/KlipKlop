@@ -5,31 +5,22 @@ import { saveMediaToStorage } from "./utils"
 import { CURRENT_USER_POSTS_UPDATE } from "../constants"
 import uuid from "uuid-random"
 
-export const createPost = (description, video, thumbnail) => (dispatch) =>
+export const createPost = (description, video, thumbnail) => () =>
   new Promise((resolve, reject) => {
     let storagePostId = uuid()
 
     const videoFilename = video.substring(video.lastIndexOf("/") + 1)
-    const thumbnailFilename = thumbnail.substring(
-      thumbnail.lastIndexOf("/") + 1
-    )
+    const thumbnailFilename = thumbnail.substring(thumbnail.lastIndexOf("/") + 1)
     let allSavePromises = Promise.all([
-      saveMediaToStorage(
-        video,
-        `posts/${
-          firebase.auth().currentUser.uid
-        }/${storagePostId}/video/${videoFilename}`
-      ),
+      saveMediaToStorage(video, `posts/${firebase.auth().currentUser.uid}/${storagePostId}/video/${videoFilename}`),
       saveMediaToStorage(
         thumbnail,
-        `posts/${
-          firebase.auth().currentUser.uid
-        }/${storagePostId}/thumbnail/${thumbnailFilename}`
+        `posts/${firebase.auth().currentUser.uid}/${storagePostId}/thumbnail/${thumbnailFilename}`,
       ),
     ])
 
     allSavePromises
-      .then((media) => {
+      .then(media => {
         firebase
           .firestore()
           .collection("posts")
@@ -49,19 +40,17 @@ export const createPost = (description, video, thumbnail) => (dispatch) =>
 
 export const getPostsByUser =
   (uid = firebase.auth().currentUser.uid) =>
-  (dispatch) =>
+  dispatch =>
     new Promise((resolve, reject) => {
-      console.log("GET POSTS")
       firebase
         .firestore()
         .collection("posts")
         .where("creator", "==", uid)
         .orderBy("createdAt", "desc")
-        .onSnapshot((snapshot) => {
-          let posts = snapshot.docs.map((doc) => {
+        .onSnapshot(snapshot => {
+          let posts = snapshot.docs.map(doc => {
             const data = doc.data()
             const id = doc.id
-            console.log("DOC", doc)
             return { id, ...data }
           })
           dispatch({
@@ -69,6 +58,6 @@ export const getPostsByUser =
             currentUserPosts: posts,
           })
         })
-    }).catch((error) => {
+    }).catch(error => {
       console.log(error)
     })

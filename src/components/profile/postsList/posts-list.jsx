@@ -12,7 +12,7 @@ export function ProfilePostsList({ posts, children, onRefresh, refreshing }) {
       data={posts}
       ListHeaderComponent={children}
       renderItem={({ item }) => <ProfilePostsListItem item={item} />}
-      keyExtractor={(item) => item.id}
+      keyExtractor={item => item.id}
     />
   )
 }

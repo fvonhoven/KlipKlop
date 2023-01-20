@@ -59,9 +59,7 @@ export function AuthDetails({ authPage, setDetailsPage }) {
           setDetailsPage(false)
         }}
       >
-        <Text style={styles.buttonText}>
-          {authPage ? "Sign In" : "Sign Up"}
-        </Text>
+        <Text style={styles.buttonText}>{authPage ? "Sign In" : "Sign Up"}</Text>
       </TouchableOpacity>
     </View>
   )

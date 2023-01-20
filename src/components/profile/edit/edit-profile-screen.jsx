@@ -8,7 +8,7 @@ import { useSelector } from "react-redux"
 import styles from "./styles"
 
 export function EditProfileScreen({ navigation }) {
-  const auth = useSelector((state) => state.auth)
+  const auth = useSelector(state => state.auth)
   const chooseImage = async () => {
     console.log("Choose Image")
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -27,14 +27,8 @@ export function EditProfileScreen({ navigation }) {
     <SafeAreaView style={styles.container}>
       <NavBar />
       <View style={styles.imageContainer}>
-        <TouchableOpacity
-          style={styles.imageViewContainer}
-          onPress={chooseImage}
-        >
-          <Image
-            style={styles.image}
-            source={{ uri: auth.currentUser.photoURL }}
-          />
+        <TouchableOpacity style={styles.imageViewContainer} onPress={chooseImage}>
+          <Image style={styles.image} source={{ uri: auth.currentUser.photoURL }} />
           <View style={styles.imageOverlay} />
           <Feather name="camera" size={24} color="white" />
         </TouchableOpacity>
@@ -48,13 +42,9 @@ export function EditProfileScreen({ navigation }) {
             })
           }
         >
-          <Text style={styles.editProfileText}>
-            {auth.currentUser.displayName}
-          </Text>
+          <Text style={styles.editProfileText}>{auth.currentUser.displayName}</Text>
           <View style={styles.fieldValueContainer}>
-            <Text style={styles.editProfileText}>
-              {auth.currentUser.displayName}
-            </Text>
+            <Text style={styles.editProfileText}>{auth.currentUser.displayName}</Text>
             <Feather name="chevron-right" size={20} color="black" />
           </View>
         </TouchableOpacity>

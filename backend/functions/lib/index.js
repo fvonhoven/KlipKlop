@@ -1,5 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+"use strict"
+Object.defineProperty(exports, "__esModule", { value: true })
 // // Start writing functions
 // // https://firebase.google.com/docs/functions/typescript
 //

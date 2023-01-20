@@ -24,6 +24,7 @@
     "firebase": "^8.6.3",
     "firebase-admin": "^11.4.1",
     "firebase-functions": "^4.1.1",
+    "prettier": "^2.8.3",
     "react": "18.1.0",
     "react-native": "0.70.5",
     "react-native-paper": "^5.1.3",
@@ -35,7 +36,10 @@
     "uuid-random": "^1.3.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "eslint": "^8.32.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-react": "^7.32.1"
   },
   "private": true
 }

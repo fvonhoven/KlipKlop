@@ -5,7 +5,7 @@ admin.initializeApp()
 
 const db = admin.firestore()
 
-exports.newUser = functions.auth.user().onCreate((user) => {
+exports.newUser = functions.auth.user().onCreate(user => {
   return db
     .collection("users")
     .doc(user.uid)

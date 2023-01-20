@@ -8,7 +8,7 @@ import styles from "./styles"
 
 export function EditProfileFieldScreen({ route, navigation }) {
   const { title } = route.params
-  const currentUser = useSelector((state) => state.auth.currentUser)
+  const currentUser = useSelector(state => state.auth.currentUser)
   const [displayName, setDisplayName] = React.useState(currentUser.displayName)
   const [phoneNumber, setPhoneNumber] = React.useState(currentUser.phoneNumber)
   const onSave = () => {
@@ -18,24 +18,13 @@ export function EditProfileFieldScreen({ route, navigation }) {
   }
   return (
     <SafeAreaView style={styles.container}>
-      <NavBar
-        title={title}
-        leftButton={{ display: true, name: "save", action: onSave }}
-      />
+      <NavBar title={title} leftButton={{ display: true, name: "save", action: onSave }} />
       <Divider />
       <View style={styles.mainContainer}>
         <Text style={styles.title}>{title}</Text>
-        <TextInput
-          style={styles.textInput}
-          value={displayName}
-          onChangeText={setDisplayName}
-        />
+        <TextInput style={styles.textInput} value={displayName} onChangeText={setDisplayName} />
         <Text style={styles.title}>Phone Number</Text>
-        <TextInput
-          style={styles.textInput}
-          value={phoneNumber}
-          onChangeText={setPhoneNumber}
-        />
+        <TextInput style={styles.textInput} value={phoneNumber} onChangeText={setPhoneNumber} />
       </View>
     </SafeAreaView>
   )

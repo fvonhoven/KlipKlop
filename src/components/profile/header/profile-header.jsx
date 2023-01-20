@@ -22,10 +22,7 @@ export function ProfileHeader({ user, navigation }) {
           <Text style={styles.counterLabelText}>Likes</Text>
         </View>
       </View>
-      <TouchableOpacity
-        style={styles.grayOutlinedButton}
-        onPress={() => navigation.navigate("editProfile")}
-      >
+      <TouchableOpacity style={styles.grayOutlinedButton} onPress={() => navigation.navigate("editProfile")}>
         <Text style={styles.grayOutlinedButtonText}>Edit Profile</Text>
       </TouchableOpacity>
     </View>

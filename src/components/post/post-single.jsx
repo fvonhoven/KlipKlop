@@ -1,11 +1,9 @@
 import React, { forwardRef, useEffect, useImperativeHandle } from "react"
-import { View } from "react-native"
 import { Video } from "expo-av"
 import styles from "./styles"
 
 export const PostSingle = forwardRef(({ item }, parentRef) => {
   const { id: postId, media } = item
-  console.log("ITEEMMMM", item.media[1])
   const videoRef = React.useRef(null)
   useImperativeHandle(parentRef, () => ({
     play,
@@ -68,8 +66,6 @@ export const PostSingle = forwardRef(({ item }, parentRef) => {
       posterSource={{ uri: media[1] }}
       posterStyle={{ resizeMode: "cover", height: "100%" }}
       source={{ uri: media[0] }}
-      // uri: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4",
-      // }}
     />
   )
 })

@@ -3,8 +3,8 @@ require("firebase/firebase-auth")
 import { USER_STATE_CHANGE } from "../constants"
 import { getPostsByUser } from "./post"
 
-export const userAuthStateListener = () => (dispatch) => {
-  firebase.auth().onAuthStateChanged((user) => {
+export const userAuthStateListener = () => dispatch => {
+  firebase.auth().onAuthStateChanged(user => {
     if (user) {
       dispatch(getCurrentUserData(user.uid))
       dispatch(getPostsByUser(user.uid))
@@ -14,13 +14,12 @@ export const userAuthStateListener = () => (dispatch) => {
   })
 }
 
-export const getCurrentUserData = (userId) => (dispatch) => {
-  console.log("GET CURRENT USER DATA", userId)
+export const getCurrentUserData = userId => dispatch => {
   firebase
     .firestore()
     .collection("users")
     .doc(userId)
-    .onSnapshot((snapshot) => {
+    .onSnapshot(snapshot => {
       if (snapshot.exists) {
         dispatch({
           type: USER_STATE_CHANGE,
@@ -33,7 +32,7 @@ export const getCurrentUserData = (userId) => (dispatch) => {
     })
 }
 
-export const login = (email, password) => (dispatch) =>
+export const login = (email, password) => () =>
   new Promise((resolve, reject) => {
     firebase
       .auth()
@@ -41,13 +40,13 @@ export const login = (email, password) => (dispatch) =>
       .then(() => {
         resolve()
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error)
         reject(error)
       })
   })
 
-export const register = (email, password) => (dispatch) => {
+export const register = (email, password) => () => {
   return new Promise((resolve, reject) => {
     firebase
       .auth()
@@ -55,14 +54,14 @@ export const register = (email, password) => (dispatch) => {
       .then(() => {
         resolve()
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error)
         reject(error)
       })
   })
 }
 
-export const appLogout = () => (dispatch) =>
+export const appLogout = () => () =>
   new Promise((resolve, reject) => {
     firebase
       .auth()
@@ -70,7 +69,7 @@ export const appLogout = () => (dispatch) =>
       .then(() => {
         resolve()
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error)
         reject(error)
       })

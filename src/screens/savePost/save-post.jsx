@@ -17,9 +17,7 @@ import { useDispatch } from "react-redux"
 import { createPost } from "../../redux/actions"
 
 const HideKeyboard = ({ children }) => (
-  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-    {children}
-  </TouchableWithoutFeedback>
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
 )
 
 export function SavePostScreen(props) {
@@ -30,13 +28,7 @@ export function SavePostScreen(props) {
 
   const handleSavePost = () => {
     setRequestRunning(true)
-    dispatch(
-      createPost(
-        postDescription,
-        props?.route?.params?.source,
-        props?.route?.params?.sourceThumb
-      )
-    )
+    dispatch(createPost(postDescription, props?.route?.params?.source, props?.route?.params?.sourceThumb))
       .then(() => navigation.dispatch(StackActions.popToTop()))
       .catch(() => setRequestRunning(false))
   }
@@ -62,24 +54,15 @@ export function SavePostScreen(props) {
             onChangeText={setPostDescription}
             value={postDescription}
           />
-          <Image
-            style={styles.mediaPreview}
-            source={{ uri: props?.route?.params?.source || TEST_SOURCE }}
-          />
+          <Image style={styles.mediaPreview} source={{ uri: props?.route?.params?.source || TEST_SOURCE }} />
         </View>
         <View style={{ flex: 1 }} />
         <View style={styles.buttonsContainer}>
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            style={styles.cancelButton}
-          >
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.cancelButton}>
             <Feather name="x" size={32} color="#000" />
             <Text style={styles.cancelButtonText}>Cancel</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => handleSavePost()}
-            style={styles.postButton}
-          >
+          <TouchableOpacity onPress={() => handleSavePost()} style={styles.postButton}>
             <Feather name="corner-left-up" size={32} color="#fff" />
             <Text style={styles.postButtonText}>Post</Text>
           </TouchableOpacity>
