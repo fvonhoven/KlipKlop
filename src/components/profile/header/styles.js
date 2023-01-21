@@ -35,9 +35,27 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 30,
   },
+  grayOutlinedIconButton: {
+    borderColor: "lightgrey",
+    borderWidth: 1,
+    borderRadius: 4,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    marginHorizontal: 10,
+  },
   grayOutlinedButtonText: {
-    color: "grey",
+    color: "black",
     fontSize: 16,
+  },
+  filledButton: {
+    borderRadius: 4,
+    paddingVertical: 10,
+    paddingHorizontal: 50,
+    backgroundColor: "#ff4040",
+  },
+  filledButtonText: {
+    color: "#fff",
+    fontWeight: "700",
   },
 })
 

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
-import { USER_KEY } from "./queryKey"
+import { queryKeys } from "./queryKeys"
 import { getUserById } from "../services/user"
 
 export const useUser = (userId, options = {}) => {
-  return useQuery([USER_KEY, userId], () => getUserById(userId), options)
+  return useQuery(queryKeys.user(userId), () => getUserById(userId), options)
 }

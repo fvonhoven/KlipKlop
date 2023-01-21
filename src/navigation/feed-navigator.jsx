@@ -10,7 +10,7 @@ export function FeedNavigator() {
     <NavigationContextProvider>
       <Tab.Navigator initialRouteName="feedList" tabBar={() => <></>}>
         <Tab.Screen name="feedList" component={FeedScreen} />
-        <Tab.Screen name="feedProfile" component={ProfileScreen} />
+        {/* <Tab.Screen name="feedProfile" component={ProfileScreen} /> */}
         <Tab.Screen name="userPost" component={FeedScreen} options={{ gesturesEnabled: true }} />
       </Tab.Navigator>
     </NavigationContextProvider>

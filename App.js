@@ -1,16 +1,19 @@
+import firebase from "firebase"
 import { Provider } from "react-redux"
 import { createStore, applyMiddleware } from "redux"
 import thunk from "redux-thunk"
 import rootReducer from "./src/redux/reducers"
 import MainNavigator from "./src/navigation/main-navigator"
 import { NavigationContainer } from "@react-navigation/native"
-import firebase from "firebase"
 import { firebaseConfig } from "./src/firebase/firestore"
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
 import { Modal } from "./src/components/general/modal"
-
+import { LogBox } from "react-native"
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
+LogBox.ignoreLogs([
+  "AsyncStorage has been extracted from react-native core and will be removed in a future release. It can now be installed and imported from '@react-native-async-storage/async-storage' instead of 'react-native'. See https://github.com/react-native-async-storage/async-storage",
+])
 function App() {
   if (firebase.apps.length === 0) {
     firebase.initializeApp(firebaseConfig)

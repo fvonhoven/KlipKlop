@@ -22,8 +22,7 @@ export function ProfileScreen({ navigation, route }) {
   if (NavigationContext != null && !route?.params?.initialUserId) {
     providerUserId = useContext(NavigationContext)?.currentVideoUserId
   }
-  route?.params?.initialUserId && console.log("ROUTE????", route?.params?.initialUserId)
-  providerUserId && console.log("PROVIDER ID", providerUserId)
+
   const user = useUser(route?.params?.initialUserId || providerUserId).data || currentUser
   const dispatch = useDispatch()
   const handleLogout = () => {
@@ -31,7 +30,7 @@ export function ProfileScreen({ navigation, route }) {
   }
 
   const fetchPosts = () => {
-    dispatch(getPostsByUser())
+    dispatch(getPostsByUser(currentUser.uid))
   }
 
   useEffect(() => {
@@ -39,7 +38,7 @@ export function ProfileScreen({ navigation, route }) {
   }, [])
 
   useEffect(() => {
-    if (user?.uid) {
+    if (user.uid) {
       getPostsByUserId(user.uid).then(setUserPosts)
     }
   }, [user])

@@ -5,5 +5,5 @@ export const initialState = {
 export const actions = {
   UPDATE_USER_ID: "UPDATE_USER_ID",
   CLEAR_USER_ID: "CLEAR_USER_ID",
-  UPDATE_COMPLETED: "UPADTE_COMPLETED",
+  UPDATE_COMPLETED: "UPDATE_COMPLETED",
 }

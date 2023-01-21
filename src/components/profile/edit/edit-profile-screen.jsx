@@ -21,8 +21,7 @@ export function EditProfileScreen({ navigation }) {
       saveUserProfileImage(result.assets[0].uri)
     }
   }
-  // console.log("EDIT PROFILE CURRENT USER", auth.currentUser)
-  // TODO: just use currentUser from firebase?
+
   return (
     <SafeAreaView style={styles.container}>
       <NavBar />

@@ -3,7 +3,6 @@ import { View } from "react-native"
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs"
 import { CameraScreen, ProfileScreen } from "../screens"
 import { Feather } from "@expo/vector-icons"
-import { FeedScreen } from "../screens/feed/feed-screen"
 import { SearchScreen } from "../screens/search/search-screen"
 import { FeedNavigator } from "./feed-navigator"
 
