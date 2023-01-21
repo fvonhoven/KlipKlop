@@ -19,7 +19,7 @@ export const PostSingle = forwardRef(({ item }, parentRef) => {
   }, [])
 
   const play = async () => {
-    if (!videoRef.current) {
+    if (videoRef.current == null) {
       return
     }
     const status = await videoRef.current.getStatusAsync()
@@ -34,7 +34,7 @@ export const PostSingle = forwardRef(({ item }, parentRef) => {
   }
 
   const stop = async () => {
-    if (!videoRef.current) {
+    if (videoRef.current == null) {
       return
     }
     const status = await videoRef.current.getStatusAsync()
@@ -49,7 +49,7 @@ export const PostSingle = forwardRef(({ item }, parentRef) => {
   }
 
   const unload = async () => {
-    if (!videoRef.current) {
+    if (videoRef.current == null) {
       return
     }
     try {

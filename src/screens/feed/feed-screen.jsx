@@ -1,27 +1,38 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useContext, useState, useRef } from "react"
 import { View, Text, FlatList, Dimensions } from "react-native"
 import { PostSingle } from "../../components"
-import { getFeed } from "../../services/posts"
+import { getFeed, getPostsByUserId } from "../../services/posts"
+import { NavigationContext } from "../../navigation/context/provider"
 // TODO: get height of navbar from react navigation
 
-export function FeedScreen() {
-  const mediaRefs = React.useRef([])
-  const [posts, setPosts] = React.useState([])
-  const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+export function FeedScreen({ route }) {
+  const { updateCurrentVideoUserId, currentVideoUserId } = useContext(NavigationContext)
+  console.log("updateCurrentVideoUserId", currentVideoUserId)
+  const mediaRefs = useRef([])
+  const [posts, setPosts] = useState([])
   const height = Dimensions.get("window").height
 
   useEffect(() => {
-    getFeed().then(feed => {
-      setPosts(feed)
-    })
+    if (route?.params?.profile) {
+      getPostsByUserId(route.params.creator).then(setPosts)
+    } else {
+      getFeed().then(feed => {
+        setPosts(feed)
+      })
+    }
   }, [])
 
-  const onViewableItemsChanged = React.useRef(({ changed }) => {
+  const onViewableItemsChanged = useRef(({ changed }) => {
     changed.forEach(element => {
+      console.log("onViewableItemsChanged", element)
+      console.log("MEDIA REFS", mediaRefs.current)
       const cell = mediaRefs.current[element.key]
       if (cell) {
         // console.log("onViewableItemsChanged", element, element.isViewable)
         if (element.isViewable) {
+          if (!route?.params?.profile) {
+            updateCurrentVideoUserId(element.item.creator)
+          }
           cell.play()
         } else {
           cell.stop()
@@ -33,7 +44,7 @@ export function FeedScreen() {
   const renderItem = ({ item, index }) => {
     return (
       <View style={[{ flex: 1, height: height - 114 }]}>
-        <PostSingle item={item} ref={PostSingleRef => (mediaRefs.current[item.posts] = PostSingleRef)} />
+        <PostSingle item={item} ref={PostSingleRef => (mediaRefs.current[item.id] = PostSingleRef)} />
       </View>
     )
   }

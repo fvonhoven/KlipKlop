@@ -17,7 +17,7 @@ export function SearchScreen() {
       <TextInput onChangeText={setTextInput} style={styles.textInput} placeholder="Search" autoCapitalize="none" />
       <FlatList
         data={searchUsers}
-        renderItem={SearchUserItem}
+        renderItem={({ item }) => <SearchUserItem item={item} />}
         keyExtractor={item => item.email}
         // extraData={searchUsers.length()}
       />

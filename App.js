@@ -7,6 +7,7 @@ import { NavigationContainer } from "@react-navigation/native"
 import firebase from "firebase"
 import { firebaseConfig } from "./src/firebase/firestore"
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
+import { Modal } from "./src/components/general/modal"
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
@@ -24,6 +25,7 @@ function App() {
       <Provider store={store}>
         <NavigationContainer>
           <MainNavigator />
+          <Modal />
         </NavigationContainer>
       </Provider>
     </QueryClientProvider>

@@ -7,10 +7,10 @@ const styles = StyleSheet.create({
     zIndex: 1,
     bottom: 0,
     width: "100%",
-    padding: 20,
+    padding: 10,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-end",
   },
   displayName: {
     color: "#fff",
@@ -28,6 +28,18 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     borderWidth: 2,
     borderColor: "#fff",
+    marginBottom: 30,
+  },
+  rightContainer: {
+    alignItems: "center",
+  },
+  actionButton: {
+    paddingBottom: 16,
+  },
+  actionButtonText: {
+    color: "white",
+    textAlign: "center",
+    marginTop: 4,
   },
 })
 

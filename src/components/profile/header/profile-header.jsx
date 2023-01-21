@@ -4,6 +4,7 @@ import { Avatar } from "react-native-paper"
 import styles from "./styles"
 
 export function ProfileHeader({ user, navigation }) {
+  console.log("user", user)
   return (
     <View style={styles.container}>
       <Avatar.Icon size={60} icon="account" />
