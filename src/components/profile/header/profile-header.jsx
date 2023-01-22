@@ -15,7 +15,10 @@ export function ProfileHeader({ user, navigation }) {
     if (isFollowing) {
       return (
         <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity style={styles.grayOutlinedButton}>
+          <TouchableOpacity
+            style={styles.grayOutlinedButton}
+            onPress={() => navigation.navigate("singleChat", { contactId: user.uid })}
+          >
             <Text style={styles.grayOutlinedButtonText}>Message</Text>
           </TouchableOpacity>
           <TouchableOpacity

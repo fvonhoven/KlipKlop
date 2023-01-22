@@ -20,5 +20,5 @@ export const useChats = () => {
       listenerInstance = chatsListener(handleChatsChange)
     }
     return () => listenerInstance && listenerInstance()
-  }, [currentUser])
+  }, [handleChatsChange, currentUser])
 }
