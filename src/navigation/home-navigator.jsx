@@ -1,10 +1,11 @@
 import React from "react"
 import { View } from "react-native"
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs"
-import { CameraScreen, ProfileScreen } from "../screens"
+import { CameraScreen, ProfileScreen, ChatListScreen } from "../screens"
 import { Feather } from "@expo/vector-icons"
 import { SearchScreen } from "../screens/search/search-screen"
 import { FeedNavigator } from "./feed-navigator"
+import { useChats } from "../hooks/useChats"
 
 const Tab = createMaterialBottomTabNavigator()
 
@@ -13,6 +14,7 @@ const EmptyScreen = () => {
 }
 
 export default function HomeNavigator() {
+  useChats()
   return (
     <Tab.Navigator barStyle={{ backgroundColor: "black" }} initialRouteName="Add">
       <Tab.Screen
@@ -38,7 +40,7 @@ export default function HomeNavigator() {
       />
       <Tab.Screen
         name="Inbox"
-        component={EmptyScreen}
+        component={ChatListScreen}
         options={{
           tabBarIcon: ({ color }) => <Feather name="message-square" color={color} size={26} />,
         }}
