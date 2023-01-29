@@ -21,7 +21,7 @@ export default function MainNavigator() {
   if (!currentUserObject.loaded) {
     return <View />
   }
-
+  console.log(currentUserObject)
   return (
     <Stack.Navigator>
       {currentUserObject?.currentUser ? (

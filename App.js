@@ -10,6 +10,9 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
 import { Modal } from "./src/components/general/modal"
 import { LogBox } from "react-native"
 const store = createStore(rootReducer, applyMiddleware(thunk))
+import { Amplify, Storage } from "aws-amplify"
+import awsconfig from "./src/aws-exports"
+Amplify.configure(awsconfig)
 
 LogBox.ignoreLogs([
   "AsyncStorage has been extracted from react-native core and will be removed in a future release. It can now be installed and imported from '@react-native-async-storage/async-storage' instead of 'react-native'. See https://github.com/react-native-async-storage/async-storage",

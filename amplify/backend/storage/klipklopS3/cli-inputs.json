@@ -1,0 +1,16 @@
+{
+  "resourceName": "klipklopS3",
+  "policyUUID": "83df662d",
+  "bucketName": "klipklopd84f25f3d7c741b5a26fcf2fb338a557",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "S3Triggerc3b007f1",
+  "groupAccess": {}
+}

@@ -15,6 +15,7 @@ import styles from "./styles"
 import { ActivityIndicator } from "react-native-paper"
 import { useDispatch } from "react-redux"
 import { createPost } from "../../redux/actions"
+import { uploadFile } from "../../redux/actions/utils"
 
 const HideKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
@@ -32,7 +33,7 @@ export function SavePostScreen(props) {
       .then(() => navigation.dispatch(StackActions.popToTop()))
       .catch(() => setRequestRunning(false))
   }
-
+  console.log("HEYYY")
   if (requestRunning) {
     return (
       <View style={styles.uploadingContainer}>
@@ -62,7 +63,7 @@ export function SavePostScreen(props) {
             <Feather name="x" size={32} color="#000" />
             <Text style={styles.cancelButtonText}>Cancel</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSavePost()} style={styles.postButton}>
+          <TouchableOpacity onPress={handleSavePost} style={styles.postButton}>
             <Feather name="corner-left-up" size={32} color="#fff" />
             <Text style={styles.postButtonText}>Post</Text>
           </TouchableOpacity>
