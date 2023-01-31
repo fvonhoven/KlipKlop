@@ -1,26 +1,33 @@
 import firebase from "firebase"
 require("firebase/firebase-auth")
 require("firebase/firestore")
-import { saveMediaToStorage } from "./utils"
+import { saveMediaToStorage, uploadToS3 } from "./utils"
 import { CURRENT_USER_POSTS_UPDATE } from "../constants"
 import uuid from "uuid-random"
 
-export const createPost = (description, video, thumbnail) => () =>
+export const createPost = (description, video, thumbnail, progressCallback) => () =>
   new Promise((resolve, reject) => {
     let storagePostId = uuid()
 
     const videoFilename = video.substring(video.lastIndexOf("/") + 1)
     const thumbnailFilename = thumbnail.substring(thumbnail.lastIndexOf("/") + 1)
     let allSavePromises = Promise.all([
-      saveMediaToStorage(video, `posts/${firebase.auth().currentUser.uid}/${storagePostId}/video/${videoFilename}`),
-      saveMediaToStorage(
+      uploadToS3(
+        video,
+        `posts/${firebase.auth().currentUser.uid}/${storagePostId}/video/${videoFilename}`,
+        progressCallback,
+      ),
+      uploadToS3(
         thumbnail,
         `posts/${firebase.auth().currentUser.uid}/${storagePostId}/thumbnail/${thumbnailFilename}`,
+        progressCallback,
       ),
     ])
+    console.log("ALL SAVE", allSavePromises)
 
     allSavePromises
       .then(media => {
+        console.log("MEDIA", media)
         firebase
           .firestore()
           .collection("posts")

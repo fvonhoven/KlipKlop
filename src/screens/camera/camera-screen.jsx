@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { View, Image, TouchableOpacity, Text } from "react-native"
+import { View, Image, TouchableOpacity, Text, Alert } from "react-native"
 import { Camera } from "expo-camera"
 import { Audio } from "expo-av"
 import * as ImagePicker from "expo-image-picker"
@@ -7,7 +7,9 @@ import * as MediaLibrary from "expo-media-library"
 import * as VideoThumbnails from "expo-video-thumbnails"
 import { useIsFocused } from "@react-navigation/core"
 import { Feather } from "@expo/vector-icons"
+import { Storage } from "aws-amplify"
 import styles from "./styles"
+import { saveMediaToStorage } from "../../redux/actions"
 
 export function CameraScreen({ navigation }) {
   const [hasCameraPermissions, setHasCameraPermissions] = useState(false)
@@ -21,6 +23,48 @@ export function CameraScreen({ navigation }) {
   const [cameraFlash, setCameraFlash] = useState(Camera.Constants.FlashMode.off)
 
   const isFocused = useIsFocused()
+
+  const [asset, setAsset] = useState(null)
+  const [progressText, setProgressText] = useState("")
+  const [isLoading, setisLoading] = useState(false)
+
+  // TODO: clean all this upload stuff up into folders and proper functions
+
+  const fetchResourceFromURI = async uri => {
+    console.log(uri)
+    try {
+      const response = await fetch(uri)
+      console.log("RESPONSE", response)
+      const blob = await response.blob()
+      return blob
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  // const selectFile = async () => {
+  //   let result = await ImagePicker.launchImageLibraryAsync({
+  //     mediaTypes: ImagePicker.MediaTypeOptions.All,
+  //     allowsEditing: true,
+  //     aspect: [16, 9],
+  //     quality: 1,
+  //   })
+  //   if (!result.assets) {
+  //     Alert.alert(result.errorMessage)
+  //     return
+  //   }
+  //   console.log(result.assets[0].uri.replace("file://", ""))
+  //   // setAsset(result.assets[0].uri.replace("file://", ""))
+  //   setAsset(result.assets[0].uri.replace("file://", ""))
+  //   Alert.alert("Upload Video", "Upload to S3?", [
+  //     {
+  //       text: "Cancel",
+  //       onPress: () => console.log("Cancel Pressed"),
+  //       style: "cancel",
+  //     },
+  //     { text: "OK", onPress: () => uploadResource(result.assets[0].uri.replace("file://", "")) },
+  //   ])
+  // }
 
   useEffect(() => {
     ;(async () => {

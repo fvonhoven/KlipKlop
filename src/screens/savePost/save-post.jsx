@@ -23,12 +23,47 @@ const HideKeyboard = ({ children }) => (
 export function SavePostScreen(props) {
   const navigation = useNavigation()
   const [postDescription, setPostDescription] = useState("")
+  const [progressText, setProgressText] = useState("")
   const [requestRunning, setRequestRunning] = useState(false)
   const dispatch = useDispatch()
 
+  const uploadResource = async imageUri => {
+    const response = await fetch(imageUri)
+    const blob = await response.blob()
+
+    try {
+      return await Storage.put("testBucket/TACOS1", blob, {
+        level: "public",
+        contentType: blob.type,
+        progressCallback(uploadProgress) {
+          setProgressText(`Progress: ${Math.round((uploadProgress.loaded / uploadProgress.total) * 100)} %`)
+          console.log(`Progress: ${Math.round((uploadProgress.loaded / uploadProgress.total) * 100)} %`)
+        },
+      })
+        .then(res => {
+          Storage.get(res.key)
+            .then(downloadUrl => console.log("DOWNLOAD URL", downloadUrl))
+            .catch(err => {
+              setProgressText("Upload Error")
+              console.log(err)
+            })
+        })
+        .catch(err => {
+          setProgressText("Upload Error")
+          console.log(err)
+        })
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
   const handleSavePost = () => {
     setRequestRunning(true)
-    dispatch(createPost(postDescription, props?.route?.params?.source, props?.route?.params?.sourceThumb))
+    dispatch(
+      createPost(postDescription, props?.route?.params?.source, props?.route?.params?.sourceThumb, prog =>
+        setProgressText(prog),
+      ),
+    )
       .then(() => navigation.dispatch(StackActions.popToTop()))
       .catch(() => setRequestRunning(false))
   }
@@ -37,6 +72,7 @@ export function SavePostScreen(props) {
     return (
       <View style={styles.uploadingContainer}>
         <ActivityIndicator color="red" size="large" />
+        <Text>Progress: {(parseInt(progressText, 10) / 2).toString()}</Text>
       </View>
     )
   }
