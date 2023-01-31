@@ -15,47 +15,31 @@ import styles from "./styles"
 import { ActivityIndicator } from "react-native-paper"
 import { useDispatch } from "react-redux"
 import { createPost } from "../../redux/actions"
+import { ProgressBar } from "../../components/progress-bar"
 
 const HideKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
 )
 
+// const ProgressBar = ({ progress }) => {
+//   const prog = (200 - progress * 2) / 200
+//   const progressWidth = 200 * (1 - prog)
+//   return (
+//     <View style={{ backgroundColor: "purple" }}>
+//       <View style={{ height: 10, width: 200, borderWidth: 1, borderColor: "black", backgroundColor: "blue" }}>
+//         <View style={{ width: progressWidth, backgroundColor: "red", height: 8 }} />
+//       </View>
+//       <Text style={{ textAlign: "center" }}>{progress.toString()} %</Text>
+//     </View>
+//   )
+// }
+
 export function SavePostScreen(props) {
   const navigation = useNavigation()
   const [postDescription, setPostDescription] = useState("")
-  const [progressText, setProgressText] = useState("")
+  const [progressText, setProgressText] = useState(0)
   const [requestRunning, setRequestRunning] = useState(false)
   const dispatch = useDispatch()
-
-  const uploadResource = async imageUri => {
-    const response = await fetch(imageUri)
-    const blob = await response.blob()
-
-    try {
-      return await Storage.put("testBucket/TACOS1", blob, {
-        level: "public",
-        contentType: blob.type,
-        progressCallback(uploadProgress) {
-          setProgressText(`Progress: ${Math.round((uploadProgress.loaded / uploadProgress.total) * 100)} %`)
-          console.log(`Progress: ${Math.round((uploadProgress.loaded / uploadProgress.total) * 100)} %`)
-        },
-      })
-        .then(res => {
-          Storage.get(res.key)
-            .then(downloadUrl => console.log("DOWNLOAD URL", downloadUrl))
-            .catch(err => {
-              setProgressText("Upload Error")
-              console.log(err)
-            })
-        })
-        .catch(err => {
-          setProgressText("Upload Error")
-          console.log(err)
-        })
-    } catch (err) {
-      console.log(err.message)
-    }
-  }
 
   const handleSavePost = () => {
     setRequestRunning(true)
@@ -71,8 +55,9 @@ export function SavePostScreen(props) {
   if (requestRunning) {
     return (
       <View style={styles.uploadingContainer}>
-        <ActivityIndicator color="red" size="large" />
-        <Text>Progress: {(parseInt(progressText, 10) / 2).toString()}</Text>
+        <ProgressBar progress={progressText} />
+        {/* <ActivityIndicator color="red" size="large" /> */}
+        {/* <Text>Progress: {(parseInt(progressText, 10) / 2).toString()}</Text> */}
       </View>
     )
   }

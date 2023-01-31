@@ -23,8 +23,8 @@ export const uploadToS3 = async (media, path, progressCallback) => {
           level: "public",
           contentType: blob.type,
           progressCallback(uploadProgress) {
-            progressCallback(`${Math.round((uploadProgress.loaded / uploadProgress.total) * 100)}`)
-            console.log(`Progress: ${Math.round((uploadProgress.loaded / uploadProgress.total) * 100)}`)
+            path.includes("video") && progressCallback(Math.round((uploadProgress.loaded / uploadProgress.total) * 100))
+            // console.log(`Progress: ${Math.round((uploadProgress.loaded / uploadProgress.total) * 100)}`)
           },
         })
       })
@@ -32,7 +32,7 @@ export const uploadToS3 = async (media, path, progressCallback) => {
         Storage.get(res.key)
           .then(downloadUrl => resolve(downloadUrl))
           .catch(err => {
-            progressCallback("Upload Error")
+            // progressCallback("Upload Error")
             console.log(err)
           })
       })
