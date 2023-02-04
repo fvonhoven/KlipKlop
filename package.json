@@ -20,6 +20,7 @@
     "@tanstack/react-query": "^4.22.0",
     "amazon-cognito-identity-js": "^6.1.2",
     "aws-amplify": "^5.0.11",
+    "aws-sdk": "^2.1306.0",
     "expo": "~47.0.12",
     "expo-av": "^13.0.2",
     "expo-camera": "^13.1.0",
