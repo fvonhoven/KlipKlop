@@ -1,9 +1,9 @@
 import firebase from "firebase"
-import { saveMediaToStorage } from "../redux/actions"
+import { saveMediaToStorage, uploadToS3 } from "../redux/actions"
 
 export const saveUserProfileImage = image =>
   new Promise((resolve, reject) => {
-    saveMediaToStorage(image, `profileImage/${firebase.auth().currentUser.uid}`)
+    uploadToS3(image, `profileImage/${firebase.auth().currentUser.uid}`)
       .then(downloadUrl => {
         console.log("downloadUrl", downloadUrl)
         firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).update({

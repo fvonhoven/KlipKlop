@@ -1,6 +1,6 @@
 import firebase from "firebase"
 import React from "react"
-import { View, Text, TouchableOpacity } from "react-native"
+import { View, Text, TouchableOpacity, Image } from "react-native"
 import { Avatar } from "react-native-paper"
 import styles from "./styles"
 import { Feather } from "@expo/vector-icons"
@@ -43,7 +43,12 @@ export function ProfileHeader({ user, navigation }) {
 
   return (
     <View style={styles.container}>
-      <Avatar.Icon size={60} icon="account" />
+      {user.photoURL ? (
+        <Image style={styles.profileImage} source={{ uri: user.photoURL }} />
+      ) : (
+        <Avatar.Icon size={60} icon="account" />
+      )}
+      <Text style={styles.displayName}>{user.displayName}</Text>
       <Text style={styles.emailText}>{user.email}</Text>
       <View style={styles.counterContainer}>
         <View style={styles.counterItemContainer}>

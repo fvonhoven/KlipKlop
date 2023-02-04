@@ -12,7 +12,6 @@ import {
 } from "react-native"
 import { Feather } from "@expo/vector-icons"
 import styles from "./styles"
-import { ActivityIndicator } from "react-native-paper"
 import { useDispatch } from "react-redux"
 import { createPost } from "../../redux/actions"
 import { ProgressBar } from "../../components/progress-bar"
@@ -20,19 +19,6 @@ import { ProgressBar } from "../../components/progress-bar"
 const HideKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
 )
-
-// const ProgressBar = ({ progress }) => {
-//   const prog = (200 - progress * 2) / 200
-//   const progressWidth = 200 * (1 - prog)
-//   return (
-//     <View style={{ backgroundColor: "purple" }}>
-//       <View style={{ height: 10, width: 200, borderWidth: 1, borderColor: "black", backgroundColor: "blue" }}>
-//         <View style={{ width: progressWidth, backgroundColor: "red", height: 8 }} />
-//       </View>
-//       <Text style={{ textAlign: "center" }}>{progress.toString()} %</Text>
-//     </View>
-//   )
-// }
 
 export function SavePostScreen(props) {
   const navigation = useNavigation()
@@ -56,8 +42,6 @@ export function SavePostScreen(props) {
     return (
       <View style={styles.uploadingContainer}>
         <ProgressBar progress={progressText} />
-        {/* <ActivityIndicator color="red" size="large" /> */}
-        {/* <Text>Progress: {(parseInt(progressText, 10) / 2).toString()}</Text> */}
       </View>
     )
   }
@@ -75,7 +59,7 @@ export function SavePostScreen(props) {
             onChangeText={setPostDescription}
             value={postDescription}
           />
-          <Image style={styles.mediaPreview} source={{ uri: props?.route?.params?.source || TEST_SOURCE }} />
+          <Image style={styles.mediaPreview} source={{ uri: props?.route?.params?.sourceThumb }} />
         </View>
         <View style={{ flex: 1 }} />
         <View style={styles.buttonsContainer}>
