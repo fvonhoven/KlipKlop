@@ -1,3 +1,4 @@
+import React from "react"
 import firebase from "firebase"
 import { Provider } from "react-redux"
 import { createStore, applyMiddleware } from "redux"
@@ -10,6 +11,10 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
 import { Modal } from "./src/components/general/modal"
 import { LogBox } from "react-native"
 const store = createStore(rootReducer, applyMiddleware(thunk))
+import awsconfig from "./src/aws-exports"
+import { Amplify } from "aws-amplify"
+
+Amplify.configure(awsconfig)
 
 LogBox.ignoreLogs([
   "AsyncStorage has been extracted from react-native core and will be removed in a future release. It can now be installed and imported from '@react-native-async-storage/async-storage' instead of 'react-native'. See https://github.com/react-native-async-storage/async-storage",

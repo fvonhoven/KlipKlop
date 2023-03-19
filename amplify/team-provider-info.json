@@ -1,0 +1,29 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-klipklop-staging-160927-authRole",
+      "UnauthRoleArn": "arn:aws:iam::540840247643:role/amplify-klipklop-staging-160927-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::540840247643:role/amplify-klipklop-staging-160927-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-klipklop-staging-160927-deployment",
+      "UnauthRoleName": "amplify-klipklop-staging-160927-unauthRole",
+      "StackName": "amplify-klipklop-staging-160927",
+      "StackId": "arn:aws:cloudformation:us-east-1:540840247643:stack/amplify-klipklop-staging-160927/78c9ef80-a0b8-11ed-804c-0af0b5fda68b",
+      "AmplifyAppId": "d3nbu7ss2yhkm7"
+    },
+    "categories": {
+      "auth": {
+        "klipklop51d6548f": {}
+      },
+      "function": {
+        "S3Trigger5cf495d7": {
+          "deploymentBucketName": "amplify-klipklop-staging-160927-deployment",
+          "s3Key": "amplify-builds/S3Trigger5cf495d7-47446c2f6d4b5a6c412f-build.zip"
+        }
+      },
+      "storage": {
+        "klipklopstorage": {}
+      }
+    }
+  }
+}

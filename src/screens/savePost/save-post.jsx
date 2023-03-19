@@ -12,9 +12,9 @@ import {
 } from "react-native"
 import { Feather } from "@expo/vector-icons"
 import styles from "./styles"
-import { ActivityIndicator } from "react-native-paper"
 import { useDispatch } from "react-redux"
 import { createPost } from "../../redux/actions"
+import { ProgressBar } from "../../components/progress-bar"
 
 const HideKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
@@ -23,12 +23,17 @@ const HideKeyboard = ({ children }) => (
 export function SavePostScreen(props) {
   const navigation = useNavigation()
   const [postDescription, setPostDescription] = useState("")
+  const [progressText, setProgressText] = useState(0)
   const [requestRunning, setRequestRunning] = useState(false)
   const dispatch = useDispatch()
 
   const handleSavePost = () => {
     setRequestRunning(true)
-    dispatch(createPost(postDescription, props?.route?.params?.source, props?.route?.params?.sourceThumb))
+    dispatch(
+      createPost(postDescription, props?.route?.params?.source, props?.route?.params?.sourceThumb, prog =>
+        setProgressText(prog),
+      ),
+    )
       .then(() => navigation.dispatch(StackActions.popToTop()))
       .catch(() => setRequestRunning(false))
   }
@@ -36,7 +41,7 @@ export function SavePostScreen(props) {
   if (requestRunning) {
     return (
       <View style={styles.uploadingContainer}>
-        <ActivityIndicator color="red" size="large" />
+        <ProgressBar progress={progressText} />
       </View>
     )
   }
@@ -54,7 +59,7 @@ export function SavePostScreen(props) {
             onChangeText={setPostDescription}
             value={postDescription}
           />
-          <Image style={styles.mediaPreview} source={{ uri: props?.route?.params?.source || TEST_SOURCE }} />
+          <Image style={styles.mediaPreview} source={{ uri: props?.route?.params?.sourceThumb }} />
         </View>
         <View style={{ flex: 1 }} />
         <View style={styles.buttonsContainer}>

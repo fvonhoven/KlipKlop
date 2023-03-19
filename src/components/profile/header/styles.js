@@ -17,8 +17,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
+  displayName: {
+    paddingTop: 10,
+    paddingBottom: 5,
+    fontWeight: "bold",
+    fontSize: 16,
+  },
   emailText: {
-    padding: 20,
+    paddingBottom: 15,
   },
   counterNumberText: {
     fontWeight: "bold",
@@ -56,6 +62,13 @@ const styles = StyleSheet.create({
   filledButtonText: {
     color: "#fff",
     fontWeight: "700",
+  },
+  profileImage: {
+    height: 80,
+    width: 80,
+    borderRadius: 40,
+    borderWidth: 2,
+    borderColor: "lightgrey",
   },
 })
 
